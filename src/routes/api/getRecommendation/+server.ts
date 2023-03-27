@@ -1,7 +1,7 @@
 import { createParser } from 'eventsource-parser';
 import { OPENAI_API_KEY } from '$env/static/private';
 
-const key = OPENAI_API_KEY;
+const key = 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;
 
 interface OpenAIStreamPayload {
 	model: string;
