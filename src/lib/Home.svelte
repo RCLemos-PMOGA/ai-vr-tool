@@ -7,10 +7,10 @@
 	</div>
 	<hr>
 	<script>
-		import { firestore } from './services/firebase.js'
+		import { firestore } from './firebase.js'
 		let city = ''
 		let resultados = ''
-		
+	  
 		async function searchByCity() {
 		  const querySnapshot = await firestore.collection('Exemplo').where('CITY', '==', city).get()
 		  resultados = ''
@@ -22,14 +22,14 @@
 		  }
 		  document.getElementById('resultados').innerHTML = resultados
 		}
-		</script>
-		
-		<label for="city">Digite o nome da cidade:</label>
-		<input type="text" id="city" bind:value={city}>
-		
-		<button on:click={searchByCity}>Pesquisar por cidade</button>
-		
-		<div id="resultados"></div>
+	  </script>
+	  
+	  <label for="city">Digite o nome da cidade:</label>
+	  <input type="text" id="city" bind:value={city}>
+	  
+	  <button on:click={searchByCity}>Pesquisar por cidade</button>
+	  
+	  <div id="resultados"></div>
 		<br>
 	<hr>
 	<div class="flex flex-wrap items-center mr-auto">
