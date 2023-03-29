@@ -1,3 +1,12 @@
+<script>
+	let city = ''; // declaração da variável city no escopo global
+  
+	async function searchCity() {
+	  const snapshot = await db.collection('Exemplo').where('CITY', '==', city).get();
+	  const docs = snapshot.docs.map(doc => doc.data());
+	  console.log(docs);
+	}
+  </script>
 <div class="w-full">
 	<div
 		class="text-center md:text-left font-bold text-slate-200 text-4xl md:text-5xl mb-8 md:mb-16 w-full"
@@ -19,7 +28,14 @@
 	
 	// Inicializa o Firebase
 	const firebaseConfig = {
-	  // Coloque aqui as configurações do seu projeto Firebase
+		apiKey: "AIzaSyBfd--6fT0CJCPOIa4SOQVDTmiQBBhUQxM",
+    authDomain: "pmoflix-deb5a.firebaseapp.com",
+    databaseURL: "https://pmoflix-deb5a-default-rtdb.firebaseio.com",
+    projectId: "pmoflix-deb5a",
+    storageBucket: "pmoflix-deb5a.appspot.com",
+    messagingSenderId: "477067952595",
+    appId: "1:477067952595:web:a8b3ed6a1b200fcbfbef26",
+    measurementId: "G-3B5RF84JCE"
 	}
 	const app = initializeApp(firebaseConfig)
 	const firestore = getFirestore(app)
