@@ -6,17 +6,19 @@
 		<br class="hidden md:block" /> with Open AI
 	</div>
 	<hr>
-	<!-- Arquivo App.svelte -->
-
-<script>
-	import { initializeApp } from 'firebase/app'
-	import { getFirestore } from 'firebase/firestore'
-	let city = ''
-	let resultados = ''
-	
-	// Inicializa o Firebase
-	const firebaseConfig = {
-		apiKey: "AIzaSyBfd--6fT0CJCPOIa4SOQVDTmiQBBhUQxM",
+	<br>
+	<script>
+		import firebase from 'firebase/app'
+import 'firebase/auth'
+import 'firebase/firestore'
+		import { initializeApp } from 'firebase/app'
+		import { getFirestore } from 'firebase/firestore'
+		let city = ''
+		let resultados = ''
+		
+		// Inicializa o Firebase
+		const firebaseConfig = {
+			apiKey: "AIzaSyBfd--6fT0CJCPOIa4SOQVDTmiQBBhUQxM",
     authDomain: "pmoflix-deb5a.firebaseapp.com",
     databaseURL: "https://pmoflix-deb5a-default-rtdb.firebaseio.com",
     projectId: "pmoflix-deb5a",
@@ -24,32 +26,30 @@
     messagingSenderId: "477067952595",
     appId: "1:477067952595:web:a8b3ed6a1b200fcbfbef26",
     measurementId: "G-3B5RF84JCE"
-	}
-	const app = initializeApp(firebaseConfig)
-	const firestore = getFirestore(app)
-	
-	console.log(city) // Verifica se a variável city está sendo declarada corretamente
-	
-	// Define a função de pesquisa por cidade
-	async function searchByCity() {
-	  const querySnapshot = await firestore.collection('Exemplo').where('CITY', '==', city).get()
-	  resultados = ''
-	  querySnapshot.forEach((doc) => {
-		resultados += `Cidade: ${doc.data().CITY}, Estado: ${doc.data().STATE}<br>`
-	  })
-	  if (resultados === '') {
-		resultados = 'Nenhum resultado encontrado.'
-	  }
-	  document.getElementById('resultados').innerHTML = resultados
-	}
-  </script>
-  
-  <label for="city">Digite o nome da cidade:</label>
-  <input type="text" id="city" bind:value={city}>
-  
-  <button on:click={searchByCity}>Pesquisar por cidade</button>
-  
-  <div id="resultados"></div>
+		}
+		const app = initializeApp(firebaseConfig)
+		const firestore = getFirestore(app)
+		
+		// Define a função de pesquisa por cidade
+		async function searchByCity() {
+		  const querySnapshot = await firestore.collection('Exemplo').where('CITY', '==', city).get()
+		  resultados = ''
+		  querySnapshot.forEach((doc) => {
+			resultados += `Cidade: ${doc.data().CITY}, Estado: ${doc.data().STATE}<br>`
+		  })
+		  if (resultados === '') {
+			resultados = 'Nenhum resultado encontrado.'
+		  }
+		  document.getElementById('resultados').innerHTML = resultados
+		}
+	  </script>
+	  
+	  <label for="city">Digite o nome da cidade:</label>
+	  <input type="text" id="city" bind:value={city}>
+	  
+	  <button on:click={searchByCity}>Pesquisar por cidade</button>
+	  
+	  <div id="resultados"></div>
 		<br>
 	<hr>
 	<div class="flex flex-wrap items-center mr-auto">
