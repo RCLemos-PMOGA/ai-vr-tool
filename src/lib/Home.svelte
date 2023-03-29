@@ -8,19 +8,29 @@
 	<hr>
 	<script>
 		import { firestore } from './services/firebase.js'
+		let city = ''
+		let resultados = ''
 		
 		async function searchByCity() {
-		  const city = prompt('Digite o nome da cidade:')
 		  const querySnapshot = await firestore.collection('Exemplo').where('CITY', '==', city).get()
+		  resultados = ''
 		  querySnapshot.forEach((doc) => {
-			console.log(doc.id, " => ", doc.data())
-			// ou, por exemplo:
-			// this.resultados = doc.data() (se você estiver usando o Svelte)
+			resultados += `Cidade: ${doc.data().CITY}, Estado: ${doc.data().STATE}<br>`
 		  })
+		  if (resultados === '') {
+			resultados = 'Nenhum resultado encontrado.'
+		  }
+		  document.getElementById('resultados').innerHTML = resultados
 		}
 		</script>
 		
+		<label for="city">Digite o nome da cidade:</label>
+		<input type="text" id="city" bind:value={city}>
+		
 		<button on:click={searchByCity}>Pesquisar por cidade</button>
+		
+		<div id="resultados"></div>
+		<br>
 	<hr>
 	<div class="flex flex-wrap items-center mr-auto">
 		<button
