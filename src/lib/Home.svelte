@@ -7,7 +7,7 @@
 	</div>
 	<hr>
 	<script>
-		import { firestore } from './firebase.js'
+		import { firestore } from './services/firebase.js'
 		
 		async function searchByCity() {
 		  const city = prompt('Digite o nome da cidade:')
