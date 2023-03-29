@@ -42,7 +42,7 @@
 	  </script>
 	  
 	  <label>Digite o nome da cidade:</label>
-	  <input type="text" bind:value={city}>
+	  <input type="text">
 	  
 	  <button on:click={searchByCity}>Pesquisar por cidade</button>
 	  
