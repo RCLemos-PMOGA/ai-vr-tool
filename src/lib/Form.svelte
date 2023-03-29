@@ -38,7 +38,7 @@
 <div class="pt-6 md:pt-10 text-slate-200">
 	<div>
 		<div class="mb-8">
-			<div class="mb-4 font-semibold text-lg">What kind of cinema are you searching for?</div>
+			<div class="mb-4 font-semibold text-lg">What kind of session are you searching for?</div>
 			<div class="flex items-center">
 				{#each cinemaTypes as type (type.value)}
 					<button
@@ -56,7 +56,7 @@
 		</div>
 		<div>
 			<div class="mb-4 font-semibold text-lg">
-				Select all categories that you want the show or movie to include.
+				Select all categories that you want to include.
 			</div>
 			<div class="flex items-center flex-wrap">
 				{#each categoryTypes as category}
@@ -78,14 +78,14 @@
 			</div>
 		</div>
 		<div class="mt-8">
-			<div class="mb-4 font-semibold text-lg">
+			<!--<div class="mb-4 font-semibold text-lg">
 				Write any other specifications here. Be as picky as you'd like.
 			</div>
 			<textarea
 				bind:value={specificDescriptors}
 				class="bg-white/40 border border-white/0 p-2 rounded-md placeholder:text-slate-800 text-slate-900 w-full h-20 font-medium"
 				placeholder="Ex. Must have at least 2 seasons and be on Netflix or Hulu."
-			/>
+			/>-->
 			<button
 				on:click
 				class={`${
