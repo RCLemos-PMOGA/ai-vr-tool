@@ -14,13 +14,6 @@
 		Get curated show <br class="hidden md:block" /> and movie recommendations
 		<br class="hidden md:block" /> with Open AI
 	</div>
-	<hr>
-	<br>
-	<!-- Arquivo App.svelte -->
-
-
-		<br>
-	<hr>
 	<div class="flex flex-wrap items-center mr-auto">
 		<button
 			on:click
