@@ -33,128 +33,88 @@
 		{ value: 'movie', title: 'Benchmarking' },
 		{ value: 'tv show or movie', title: 'Talk Show' }
 	];
-</script>
 
-<script type="module">
+	/**/
+	import firebase from "firebase/app";
+	import "firebase/database";
 
-	// Import the functions you need from the SDKs you need
-	import { initializeApp } from "https://www.gstatic.com/firebasejs/9.18.0/firebase-app.js";
-	// TODO: Add SDKs for Firebase products that you want to use
-	// https://firebase.google.com/docs/web/setup#available-libraries
-
-	// Your web app's Firebase configuration
 	const firebaseConfig = {
-		apiKey: "AIzaSyDIdYSvnnE0gw5W5gChAL1xe-QixcEWZzw",
-		authDomain: "exemplo2-57c2a.firebaseapp.com",
-		databaseURL: "https://exemplo2-57c2a-default-rtdb.firebaseio.com",
-		projectId: "exemplo2-57c2a",
-		storageBucket: "exemplo2-57c2a.appspot.com",
-		messagingSenderId: "943755642817",
-		appId: "1:943755642817:web:233e8bd9559ab31abdd140"
+			apiKey: "AIzaSyDIdYSvnnE0gw5W5gChAL1xe-QixcEWZzw",
+            authDomain: "exemplo2-57c2a.firebaseapp.com",
+            databaseURL: "https://exemplo2-57c2a-default-rtdb.firebaseio.com",
+            projectId: "exemplo2-57c2a",
+            storageBucket: "exemplo2-57c2a.appspot.com",
+            messagingSenderId: "943755642817",
+            appId: "1:943755642817:web:233e8bd9559ab31abdd140"
 	};
 
-	// Initialize Firebase
-	const app = initializeApp(firebaseConfig);
+	firebase.initializeApp(firebaseConfig);
 
-	//THIS IS WHERE YOU PASTE THE CODE TO CONNECT TO YOUR OWN DATABASE
-	//Copy and paste the CDN bit of code from your app that you created on Firebase.
-	//The script tag above is already there, so careful not to have duplicate script tags.
-	//After you've copied and pasted, just delete the unnecessary script tags. 
+	const db = firebase.database();
+	const dbref = db.ref();
 
-	import {getDatabase, ref, get, set, child, update, remove}
-	from "https://www.gstatic.com/firebasejs/9.18.0/firebase-database.js";
+	let searchValue = "";
 
-	const db = getDatabase();
-
-	var enterID = document.querySelector("#enterID");
-	var enterName = document.querySelector("#enterName");
-	var enterAge = document.querySelector("#enterAge");
-	var findID = document.querySelector("#findID");
-	var findName = document.querySelector("#findName");
-	var findAge = document.querySelector("#findAge");
-  
-
-	var insertBtn = document.querySelector("#insert");
-	var updateBtn = document.querySelector("#update");
-	var removeBtn = document.querySelector("#remove");
-	var findBtn = document.querySelector("#find");
-
-	function InsertData() {
-		set(ref(db, "People/"+ enterID.value),{
-			Nome: enterName.value,
-			ID: enterID.value,
-			Age: enterAge.value
-		})
-		.then(()=>{
-			alert("Data added successfully");
-		})
-		.catch((error)=>{
-			alert(error);
-		});
+	function updateSearchValue(event) {
+  	searchValue = event.target.value;
 	}
 
-	function FindData() {
-		const dbref = ref(db);
-
-		get(child(dbref, "People/" + findID.value))
-		.then((snapshot)=>{
-			if(snapshot.exists()){
-				findName.innerHTML = "Nome: " + snapshot.val().Nome;
-				findAge.innerHTML = "Age: " + snapshot.val().Age;
-			} else {
-				alert("No data found");
-			}
-		})
-		.catch((error)=>{
-			alert(error)
-		})
-		
-	}
-
-	function UpdateData(){
-		update(ref(db, "People/"+ enterID.value),{
-			Nome: enterName.value,
-			Age: enterAge.value
-		})
-		.then(()=>{
-			alert("Data updated successfully");
-		})
-		.catch((error)=>{
-			alert(error);
-		});
-	}
-
-	function RemoveData(){
-		remove(ref(db, "People/"+ enterID.value))
-		.then(()=>{
-			alert("Data deleted successfully");
-		})
-		.catch((error)=>{
-			alert(error);
-		});
-	}
-
-	insertBtn.addEventListener('click', InsertData);
-	updateBtn.addEventListener('click', UpdateData);
-	removeBtn.addEventListener('click', RemoveData);
-	findBtn.addEventListener('click', FindData);
-
-  </script>
+</script>
 
 <div class="pt-6 md:pt-10 text-slate-200">
 	<div>
 		<div class="mb-8">
 			<div class="mb-4 font-semibold text-lg">What kind of session are you searching for?</div>
-			<div class="flex items-center">
-
-			<div id="findDetails">
-				<h1>Find by ID</h1>
-				<h4>ID</h4>
-				<input id="findID" type="text"> <br><br>
-				<button id="find">FIND</button>
-				<h3 id="findName" type="text"></h3>
-				<h3 id="findAge" type="number"></h3> <br><br>
-			</div>
+				<div class="flex items-center">
+					<script>
+						import { onMount } from 'svelte';
+						import { child, get, query, ref } from 'firebase/database';
+						import { firebaseApp } from './firebaseConfig.js';
+					  
+						let dbref;
+						let People = [];
+						let findID = '';
+					  
+						const search = async () => {
+						  const queryRef = query(child(dbref, 'People'), orderByChild('ID'), equalTo(findID));
+						  const snapshot = await get(queryRef);
+						  People = snapshot.exists() ? [snapshot.val()] : [];
+						};
+					  
+						onMount(() => {
+						  const db = firebaseApp.database();
+						  dbref = ref(db);
+						});
+					  </script>
+					  
+					  <div>
+						<input type="text" bind:value={findID}>
+						<button on:click={search}>Search</button>
+					  
+						{#if People.length > 0}
+						  <table>
+							<thead>
+							  <tr>
+								<th>ID</th>
+								<th>Nome</th>
+								<th>Age</th>
+							  </tr>
+							</thead>
+							<tbody>
+							  {#each People as person}
+								<tr>
+								  <td>{person.ID}</td>
+								  <td>{person.Nome}</td>
+								  <td>{person.Age}</td>
+								</tr>
+							  {/each}
+							</tbody>
+						  </table>
+						{:else}
+						  <p>No results found.</p>
+						{/if}
+					  </div>
+				</div>
 			</div>
 		</div>
 		<div class="mt-8">
