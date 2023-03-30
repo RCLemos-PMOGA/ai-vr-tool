@@ -48,10 +48,10 @@
 						
 							let dbref;
 							let People = [];
-							let findID = '';
+							
 						
 							const search = async () => {
-							const queryRef = query(child(dbref, 'People'), orderByChild('ID'), equalTo(findID));
+							const queryRef = query(child(dbref, 'People/'), orderByChild('ID'), equalTo(ID));
 							const snapshot = await get(queryRef);
 							People = snapshot.exists() ? [snapshot.val()] : [];
 							};
@@ -62,7 +62,7 @@
 							});
 						</script>
 						<div>
-								<input type="text" bind:value={findID}>
+								<input type="text" bind:value={ID}>
 								<button on:click={search}>Search</button>
 							
 								{#if People.length > 0}
