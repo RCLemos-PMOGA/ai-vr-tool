@@ -35,57 +35,129 @@
 	];
 </script>
 
+<script type="module">
+
+	// Import the functions you need from the SDKs you need
+	import { initializeApp } from "https://www.gstatic.com/firebasejs/9.18.0/firebase-app.js";
+	// TODO: Add SDKs for Firebase products that you want to use
+	// https://firebase.google.com/docs/web/setup#available-libraries
+
+	// Your web app's Firebase configuration
+	const firebaseConfig = {
+		apiKey: "AIzaSyDIdYSvnnE0gw5W5gChAL1xe-QixcEWZzw",
+		authDomain: "exemplo2-57c2a.firebaseapp.com",
+		databaseURL: "https://exemplo2-57c2a-default-rtdb.firebaseio.com",
+		projectId: "exemplo2-57c2a",
+		storageBucket: "exemplo2-57c2a.appspot.com",
+		messagingSenderId: "943755642817",
+		appId: "1:943755642817:web:233e8bd9559ab31abdd140"
+	};
+
+	// Initialize Firebase
+	const app = initializeApp(firebaseConfig);
+
+	//THIS IS WHERE YOU PASTE THE CODE TO CONNECT TO YOUR OWN DATABASE
+	//Copy and paste the CDN bit of code from your app that you created on Firebase.
+	//The script tag above is already there, so careful not to have duplicate script tags.
+	//After you've copied and pasted, just delete the unnecessary script tags. 
+
+	import {getDatabase, ref, get, set, child, update, remove}
+	from "https://www.gstatic.com/firebasejs/9.18.0/firebase-database.js";
+
+	const db = getDatabase();
+
+	var enterID = document.querySelector("#enterID");
+	var enterName = document.querySelector("#enterName");
+	var enterAge = document.querySelector("#enterAge");
+	var findID = document.querySelector("#findID");
+	var findName = document.querySelector("#findName");
+	var findAge = document.querySelector("#findAge");
+  
+
+	var insertBtn = document.querySelector("#insert");
+	var updateBtn = document.querySelector("#update");
+	var removeBtn = document.querySelector("#remove");
+	var findBtn = document.querySelector("#find");
+
+	function InsertData() {
+		set(ref(db, "People/"+ enterID.value),{
+			Nome: enterName.value,
+			ID: enterID.value,
+			Age: enterAge.value
+		})
+		.then(()=>{
+			alert("Data added successfully");
+		})
+		.catch((error)=>{
+			alert(error);
+		});
+	}
+
+	function FindData() {
+		const dbref = ref(db);
+
+		get(child(dbref, "People/" + findID.value))
+		.then((snapshot)=>{
+			if(snapshot.exists()){
+				findName.innerHTML = "Nome: " + snapshot.val().Nome;
+				findAge.innerHTML = "Age: " + snapshot.val().Age;
+			} else {
+				alert("No data found");
+			}
+		})
+		.catch((error)=>{
+			alert(error)
+		})
+		
+	}
+
+	function UpdateData(){
+		update(ref(db, "People/"+ enterID.value),{
+			Nome: enterName.value,
+			Age: enterAge.value
+		})
+		.then(()=>{
+			alert("Data updated successfully");
+		})
+		.catch((error)=>{
+			alert(error);
+		});
+	}
+
+	function RemoveData(){
+		remove(ref(db, "People/"+ enterID.value))
+		.then(()=>{
+			alert("Data deleted successfully");
+		})
+		.catch((error)=>{
+			alert(error);
+		});
+	}
+
+	insertBtn.addEventListener('click', InsertData);
+	updateBtn.addEventListener('click', UpdateData);
+	removeBtn.addEventListener('click', RemoveData);
+	findBtn.addEventListener('click', FindData);
+
+  </script>
+
 <div class="pt-6 md:pt-10 text-slate-200">
 	<div>
 		<div class="mb-8">
 			<div class="mb-4 font-semibold text-lg">What kind of session are you searching for?</div>
 			<div class="flex items-center">
-				{#each cinemaTypes as type (type.value)}
-					<button
-						on:click={() => {
-							cinemaType = type.value;
-						}}
-						class={`${
-							cinemaType === type.value ? 'bg-pink-600/40' : ''
-						} text-slate-200 font-bold mr-2 text-sm mt-2 py-2 px-4 rounded-full border border-pink-600`}
-					>
-						{type.title}
-					</button>
-				{/each}
+
+			<div id="findDetails">
+				<h1>Find by ID</h1>
+				<h4>ID</h4>
+				<input id="findID" type="text"> <br><br>
+				<button id="find">FIND</button>
+				<h3 id="findName" type="text"></h3>
+				<h3 id="findAge" type="number"></h3> <br><br>
 			</div>
-		</div>
-		<div>
-			<div class="mb-4 font-semibold text-lg">
-				Select all categories that you want to include.
-			</div>
-			<div class="flex items-center flex-wrap">
-				{#each categoryTypes as category}
-					<label
-						class={`${
-							selectedCategories.includes(category) ? 'bg-pink-600/40' : ''
-						} text-slate-200 font-bold mr-2 mt-2 text-sm py-2 px-4 rounded-full border border-pink-600`}
-					>
-						<input
-							class="hidden"
-							type="checkbox"
-							bind:group={selectedCategories}
-							name="categories"
-							value={category}
-						/>
-						{category}
-					</label>
-				{/each}
 			</div>
 		</div>
 		<div class="mt-8">
-			<!--<div class="mb-4 font-semibold text-lg">
-				Write any other specifications here. Be as picky as you'd like.
-			</div>
-			<textarea
-				bind:value={specificDescriptors}
-				class="bg-white/40 border border-white/0 p-2 rounded-md placeholder:text-slate-800 text-slate-900 w-full h-20 font-medium"
-				placeholder="Ex. Must have at least 2 seasons and be on Netflix or Hulu."
-			/>-->
 			<button
 				on:click
 				class={`${
