@@ -51,7 +51,7 @@
 							
 						
 							const search = async () => {
-							const queryRef = query(child(dbref, 'People/'), orderByChild('ID'), equalTo(ID));
+							const queryRef = query(child(dbref, 'People/'), orderByChild('ID'), equalTo('ID'));
 							const snapshot = await get(queryRef);
 							People = snapshot.exists() ? [snapshot.val()] : [];
 							};
