@@ -34,9 +34,6 @@
 		{ value: 'tv show or movie', title: 'Talk Show' }
 	];
 
-</script>
-
-<script>
   import { onMount } from "svelte";
   import { getDatabase, ref, query, orderByChild, equalTo } from "firebase/database";
   
