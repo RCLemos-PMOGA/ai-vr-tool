@@ -37,11 +37,11 @@
   import { onMount } from "svelte";
   import { getDatabase, ref, query, orderByChild, equalTo } from "firebase/database";
   
-  let loading = false;
+  let loadingv1 = false;
   let results = null;
   
   function search() {
-    loading = true;
+    loadingv1 = true;
     
     const db = getDatabase();
     const peopleRef = ref(db, "People");
@@ -49,7 +49,7 @@
     const nameQuery = query(peopleRef, orderByChild("Nome"), equalTo(name));
     
     Promise.all([get(ageQuery), get(nameQuery)]).then((snapshots) => {
-      loading = false;
+      loadingv1 = false;
       
       const ageResults = snapshots[0];
       const nameResults = snapshots[1];
@@ -96,7 +96,7 @@
     <button type="submit">Pesquisar</button>
   </form>
   
-  {#if loading}
+  {#if loadingv1}
     <p>Carregando...</p>
   {:else if results === null}
     <p>Faça uma pesquisa para ver os resultados</p>
