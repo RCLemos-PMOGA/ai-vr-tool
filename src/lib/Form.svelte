@@ -36,6 +36,84 @@
 
 </script>
 
+<script>
+  import { onMount } from "svelte";
+  import { getDatabase, ref, query, orderByChild, equalTo } from "firebase/database";
+  
+  let loading = false;
+  let results = null;
+  
+  function search() {
+    loading = true;
+    
+    const db = getDatabase();
+    const peopleRef = ref(db, "People");
+    const ageQuery = query(peopleRef, orderByChild("Age"), equalTo(age));
+    const nameQuery = query(peopleRef, orderByChild("Nome"), equalTo(name));
+    
+    Promise.all([get(ageQuery), get(nameQuery)]).then((snapshots) => {
+      loading = false;
+      
+      const ageResults = snapshots[0];
+      const nameResults = snapshots[1];
+      
+      // Combine results into a single array
+      const combinedResults = ageResults.concat(nameResults);
+      
+      // Remove duplicates from the array
+      results = Array.from(new Set(combinedResults.map((result) => result.ID))).map((id) => {
+        return combinedResults.find((result) => result.ID === id);
+      });
+    });
+  }
+  
+  onMount(() => {
+    // Initialize Firebase here
+	firebase.initializeApp ({
+    apiKey: "AIzaSyBfd--6fT0CJCPOIa4SOQVDTmiQBBhUQxM",
+    authDomain: "pmoflix-deb5a.firebaseapp.com",
+    databaseURL: "https://pmoflix-deb5a-default-rtdb.firebaseio.com",
+    projectId: "pmoflix-deb5a",
+    storageBucket: "pmoflix-deb5a.appspot.com",
+    messagingSenderId: "477067952595",
+    appId: "1:477067952595:web:a8b3ed6a1b200fcbfbef26",
+    measurementId: "G-3B5RF84JCE"
+});
+  });
+</script>
+
+<main>
+  <h1>Pesquisa avançada no Firebase</h1>
+  
+  <form on:submit|preventDefault={search}>
+    <label>
+      Nome:
+      <input type="text" bind:value={name} />
+    </label>
+    
+    <label>
+      Idade:
+      <input type="number" bind:value={age} />
+    </label>
+    
+    <button type="submit">Pesquisar</button>
+  </form>
+  
+  {#if loading}
+    <p>Carregando...</p>
+  {:else if results === null}
+    <p>Faça uma pesquisa para ver os resultados</p>
+  {:else if results.length === 0}
+    <p>Nenhum resultado encontrado</p>
+  {:else}
+    <ul>
+      {#each results as result}
+        <li>{result.Nome} ({result.Age} anos)</li>
+      {/each}
+    </ul>
+  {/if}
+</main>
+
 <div class="pt-6 md:pt-10 text-slate-200">
 	<div>
 			<div class="mb-8">
