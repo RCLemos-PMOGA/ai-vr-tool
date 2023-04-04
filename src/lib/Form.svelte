@@ -5,7 +5,7 @@
   let loadingv1 = false;
   let results = null;
   let nome = '';
-  let age = '';
+  let preco = '';
   
   function search() {
     loadingv1 = true;
