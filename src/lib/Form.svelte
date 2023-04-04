@@ -1,6 +1,6 @@
 <script>
   import { onMount } from "svelte";
-  import { getDatabase, ref, query, orderByChild, equalTo } from "firebase/database";
+  import { getDatabase, ref, query, orderByChild, equalTo } from "https://www.gstatic.com/firebasejs/9.18.0/firebase-database.js"
   
   let loadingv1 = false;
   let results = null;
