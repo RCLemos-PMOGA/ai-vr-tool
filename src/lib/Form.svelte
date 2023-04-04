@@ -25,6 +25,7 @@
 		'PMO Awards',
 		'Agile',
 		'PMBOK',
+		'PMBOK2',
 		'AI'
 	];
 
