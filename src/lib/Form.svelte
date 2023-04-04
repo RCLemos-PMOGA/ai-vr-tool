@@ -44,17 +44,35 @@
 					<div class="flex items-center">
 						<script>
 							import { onMount } from 'svelte';
-							import { child, get, query, ref } from 'firebase/database';
+							import { child, get, query, ref } from "https://www.gstatic.com/firebasejs/9.18.0/firebase-database.js"
 							import { firebaseApp } from './firebaseConfig.js';
-						
+							
+							import { initializeApp } from "firebase/app";
+							// TODO: Add SDKs for Firebase products that you want to use
+							// https://firebase.google.com/docs/web/setup#available-libraries
+
+							// Your web app's Firebase configuration
+							const firebaseConfig = {
+							  apiKey: "AIzaSyDIdYSvnnE0gw5W5gChAL1xe-QixcEWZzw",
+							  authDomain: "exemplo2-57c2a.firebaseapp.com",
+							  databaseURL: "https://exemplo2-57c2a-default-rtdb.firebaseio.com",
+							  projectId: "exemplo2-57c2a",
+							  storageBucket: "exemplo2-57c2a.appspot.com",
+							  messagingSenderId: "943755642817",
+							  appId: "1:943755642817:web:233e8bd9559ab31abdd140"
+							};
+
+							// Initialize Firebase
+							const app = initializeApp(firebaseConfig);
+							
 							let dbref;
-							let People = [];
+							let produtos = [];
 							
 						
 							const search = async () => {
-							const queryRef = query(child(dbref, 'People/'), orderByChild('ID'), equalTo('ID'));
+							const queryRef = query(child(dbref, 'produtos/'), orderByChild('ID'), equalTo('ID'));
 							const snapshot = await get(queryRef);
-							People = snapshot.exists() ? [snapshot.val()] : [];
+							produtos = snapshot.exists() ? [snapshot.val()] : [];
 							};
 						
 							onMount(() => {
@@ -66,21 +84,21 @@
 								<input type="text" bind:value={ID}>
 								<button on:click={search}>Search</button>
 							
-								{#if People.length > 0}
+								{#if produtos.length > 0}
 								<table>
 									<thead>
 									<tr>
 										<th>ID</th>
 										<th>Nome</th>
-										<th>Age</th>
+										<th>Preço</th>
 									</tr>
 									</thead>
 									<tbody>
-									{#each People as person}
+									{#each produtos as person}
 										<tr>
 										<td>{person.ID}</td>
-										<td>{person.Nome}</td>
-										<td>{person.Age}</td>
+										<td>{person.nome}</td>
+										<td>{person.preco}</td>
 										</tr>
 									{/each}
 									</tbody>
