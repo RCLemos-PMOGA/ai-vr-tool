@@ -11,9 +11,9 @@
     loadingv1 = true;
     
     const db = getDatabase();
-    const peopleRef = ref(db, "People");
-    const ageQuery = query(peopleRef, orderByChild("Age"), equalTo(age));
-    const nameQuery = query(peopleRef, orderByChild("Nome"), equalTo(nome));
+    const peopleRef = ref(db, "produtos");
+    const ageQuery = query(peopleRef, orderByChild("preco"), equalTo(preco));
+    const nameQuery = query(peopleRef, orderByChild("nome"), equalTo(nome));
     
     Promise.all([get(ageQuery), get(nameQuery)]).then((snapshots) => {
       loadingv1 = false;
@@ -34,14 +34,13 @@
   onMount(() => {
     // Initialize Firebase here
 	firebase.initializeApp ({
-    apiKey: "AIzaSyBfd--6fT0CJCPOIa4SOQVDTmiQBBhUQxM",
-    authDomain: "pmoflix-deb5a.firebaseapp.com",
-    databaseURL: "https://pmoflix-deb5a-default-rtdb.firebaseio.com",
-    projectId: "pmoflix-deb5a",
-    storageBucket: "pmoflix-deb5a.appspot.com",
-    messagingSenderId: "477067952595",
-    appId: "1:477067952595:web:a8b3ed6a1b200fcbfbef26",
-    measurementId: "G-3B5RF84JCE"
+  apiKey: "AIzaSyDIdYSvnnE0gw5W5gChAL1xe-QixcEWZzw",
+  authDomain: "exemplo2-57c2a.firebaseapp.com",
+  databaseURL: "https://exemplo2-57c2a-default-rtdb.firebaseio.com",
+  projectId: "exemplo2-57c2a",
+  storageBucket: "exemplo2-57c2a.appspot.com",
+  messagingSenderId: "943755642817",
+  appId: "1:943755642817:web:233e8bd9559ab31abdd140"
 });
   });
 </script>
@@ -57,7 +56,7 @@
     
     <label>
       Idade:
-      <input type="number" bind:value={age} />
+      <input type="number" bind:value={preco} />
     </label>
     
     <button type="submit">Pesquisar</button>
@@ -72,7 +71,7 @@
   {:else}
     <ul>
       {#each results as result}
-        <li>{result.Nome} ({result.Age} anos)</li>
+        <li>{result.nome} ({result.preco} anos)</li>
       {/each}
     </ul>
   {/if}
